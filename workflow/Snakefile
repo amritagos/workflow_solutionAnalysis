@@ -1,9 +1,11 @@
+from itertools import product
+
 cutoffs = [2.5, 3.5]
 angles = [30, 45]
 
 
 # Dictionary to retrieve cutoffs and angles in a file
-sample_to_params = {f"out-{cutoff}-{angle}" : (cutoff, angle) for cutoff, angle in zip(cutoffs, angles) }
+sample_to_params = {f"out-{cutoff}-{angle}" : (cutoff, angle) for cutoff, angle in product(cutoffs, angles) }
 SAMPLES = sample_to_params.keys()
 
 rule all:
