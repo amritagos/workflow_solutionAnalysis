@@ -1,0 +1,7 @@
+rule param_sweep:
+    input:
+        "data/dummy.txt",
+    output:
+        "results/out.txt"
+    shell:
+        "python workflow/scripts/tcf_sweep.py {input} 10.0 30.0 -o {output}"
