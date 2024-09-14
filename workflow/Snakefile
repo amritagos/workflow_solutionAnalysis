@@ -1,7 +1,21 @@
+cutoffs = [2.5, 3.5]
+angles = [30, 45]
+
+
+# Dictionary to retrieve cutoffs and angles in a file
+sample_to_params = {f"out-{cutoff}-{angle}" : (cutoff, angle) for cutoff, angle in zip(cutoffs, angles) }
+SAMPLES = sample_to_params.keys()
+
+rule all:
+    input: expand("results/{sample}", sample=SAMPLES)
+
 rule param_sweep:
     input:
         "data/dummy.txt",
     output:
-        "results/out.txt"
+        directory("results/{sample}")
+    params: 
+        cutoff = lambda wc : sample_to_params[wc.sample][0],
+        angle = lambda wc : sample_to_params[wc.sample][1]
     shell:
-        "python workflow/scripts/tcf_sweep.py {input} 10.0 30.0 -o {output}"
+        "python workflow/scripts/tcf_sweep.py -i {input} {params.cutoff} {params.angle} -o {output}"
